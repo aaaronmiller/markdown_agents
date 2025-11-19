@@ -1,0 +1,69 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit"
+  },
+  "swarm_config": {
+    "name": "cicd-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 3
+  },
+  "agents": {
+    "pipeline-designer": {
+      "model": "sonnet",
+      "thinking_budget": 12000,
+      "tools": ["filesystem", "github", "memory"],
+      "skills": ["code-review"],
+      "priority": "critical"
+    },
+    "container-builder": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": [],
+      "priority": "medium"
+    },
+    "iac-generator": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["filesystem", "memory"],
+      "skills": [],
+      "priority": "critical"
+    },
+    "secrets-manager": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["github", "memory"],
+      "skills": ["security-audit"],
+      "priority": "critical"
+    },
+    "test-automator": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["testing-strategies"],
+      "priority": "high"
+    },
+    "monitor-integrator": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": [],
+      "priority": "medium"
+    },
+    "deployment-orchestrator": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["bash", "github", "memory"],
+      "skills": [],
+      "priority": "critical"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}

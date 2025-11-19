@@ -1,0 +1,69 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit"
+  },
+  "swarm_config": {
+    "name": "api-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 3
+  },
+  "agents": {
+    "api-designer": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["api-patterns"],
+      "priority": "critical"
+    },
+    "endpoint-builder": {
+      "model": "haiku",
+      "thinking_budget": 4000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["api-patterns"],
+      "priority": "high"
+    },
+    "openapi-generator": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["api-patterns"],
+      "priority": "medium"
+    },
+    "schema-validator": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["filesystem", "memory"],
+      "skills": [],
+      "priority": "medium"
+    },
+    "security-enforcer": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["security-audit", "api-patterns"],
+      "priority": "critical"
+    },
+    "test-generator": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["testing-strategies", "api-patterns"],
+      "priority": "high"
+    },
+    "deployment-packager": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": [],
+      "priority": "medium"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}
