@@ -1,0 +1,88 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "temperature": 0.3,
+  "tools": [
+    "Task",
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Glob",
+    "Grep"
+  ],
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit",
+    "mcp_alternatives": true,
+    "skills": true
+  },
+  "swarm_config": {
+    "name": "performance-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 3
+  },
+  "agents": {
+    "profile-analyzer": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "bottleneck-detector": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "code-optimizer": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "high"
+    },
+    "database-optimizer": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["filesystem", "postgres", "memory"],
+      "skills": ["database-optimization"],
+      "priority": "critical"
+    },
+    "cache-optimizer": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "high"
+    },
+    "infrastructure-optimizer": {
+      "model": "sonnet",
+      "thinking_budget": 12000,
+      "tools": ["filesystem", "memory"],
+      "skills": [],
+      "priority": "critical"
+    },
+    "cost-analyzer": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["memory"],
+      "skills": [],
+      "priority": "medium"
+    },
+    "benchmark-validator": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["bash", "memory"],
+      "skills": [],
+      "priority": "medium"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}

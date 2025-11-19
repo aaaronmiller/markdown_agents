@@ -1,0 +1,81 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "temperature": 0.3,
+  "tools": [
+    "Task",
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Glob",
+    "Grep"
+  ],
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit",
+    "mcp_alternatives": true,
+    "skills": true
+  },
+  "swarm_config": {
+    "name": "test-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 4
+  },
+  "agents": {
+    "test-runner": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "test-strategist": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["testing-strategies", "code-review"],
+      "priority": "critical"
+    },
+    "e2e-test-generator": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["testing-strategies"],
+      "priority": "high"
+    },
+    "coverage-analyzer": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": [],
+      "priority": "medium"
+    },
+    "integration-test-generator": {
+      "model": "haiku",
+      "thinking_budget": 4000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["testing-strategies"],
+      "priority": "medium"
+    },
+    "unit-test-generator": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["testing-strategies"],
+      "priority": "medium"
+    },
+    "flaky-test-detector": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["bash", "memory"],
+      "skills": [],
+      "priority": "low"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}
