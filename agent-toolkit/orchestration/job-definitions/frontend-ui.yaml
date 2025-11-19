@@ -1,0 +1,21 @@
+job_type: frontend-ui
+description: Frontend user interface development
+tools:
+  required:
+  - filesystem
+  - github
+  optional:
+  - memory
+  - fetch
+skills:
+  required:
+  - code-review
+  optional:
+  - testing-strategies
+model_recommendation: sonnet
+thinking_budget: 10000
+typical_tasks:
+- Build UI components
+- Implement state management
+- Add user interactions
+- Write component tests

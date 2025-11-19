@@ -1,0 +1,24 @@
+job_type: backend-api
+description: Backend API development and maintenance
+tools:
+  required:
+  - filesystem
+  - github
+  - postgres
+  optional:
+  - memory
+  - fetch
+skills:
+  required:
+  - api-patterns
+  - database-optimization
+  optional:
+  - testing-strategies
+  - security-audit
+model_recommendation: sonnet
+thinking_budget: 12000
+typical_tasks:
+- Create REST endpoints
+- Implement database queries
+- Add authentication
+- Write API tests

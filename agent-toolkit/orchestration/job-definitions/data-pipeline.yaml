@@ -1,0 +1,21 @@
+job_type: data-pipeline
+description: ETL pipeline development and data processing
+tools:
+  required:
+  - filesystem
+  - postgres
+  - memory
+  optional:
+  - fetch
+skills:
+  required:
+  - database-optimization
+  optional:
+  - testing-strategies
+model_recommendation: sonnet
+thinking_budget: 12000
+typical_tasks:
+- Extract data from sources
+- Transform data
+- Load to warehouse
+- Validate data quality

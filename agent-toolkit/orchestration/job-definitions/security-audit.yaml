@@ -1,0 +1,20 @@
+job_type: security-audit
+description: Security assessment and vulnerability remediation
+tools:
+  required:
+  - filesystem
+  - github
+  optional:
+  - memory
+skills:
+  required:
+  - security-audit
+  optional:
+  - code-review
+model_recommendation: opus
+thinking_budget: 15000
+typical_tasks:
+- Scan for vulnerabilities
+- Review authentication
+- Check input validation
+- Generate security report

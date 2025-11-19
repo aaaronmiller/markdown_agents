@@ -1,0 +1,21 @@
+job_type: ml-ops
+description: Machine learning operations and model deployment
+tools:
+  required:
+  - filesystem
+  - github
+  - memory
+  optional:
+  - fetch
+skills:
+  required:
+  - database-optimization
+  optional:
+  - testing-strategies
+model_recommendation: opus
+thinking_budget: 18000
+typical_tasks:
+- Train ML models
+- Deploy models
+- Monitor model performance
+- Detect data drift
