@@ -1,0 +1,74 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "temperature": 0.2,
+  "tools": [
+    "Task",
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Glob",
+    "Grep"
+  ],
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit",
+    "mcp_alternatives": true,
+    "skills": true
+  },
+  "swarm_config": {
+    "name": "security-audit-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 4
+  },
+  "agents": {
+    "vulnerability-scanner": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "brave-search", "memory"],
+      "skills": ["security-audit"],
+      "priority": "high"
+    },
+    "secrets-detector": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["security-audit"],
+      "priority": "high"
+    },
+    "dependency-auditor": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "brave-search", "memory"],
+      "skills": ["security-audit"],
+      "priority": "medium"
+    },
+    "exploit-tester": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": ["security-audit"],
+      "priority": "high"
+    },
+    "fix-generator": {
+      "model": "opus",
+      "thinking_budget": 15000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["security-audit", "code-review"],
+      "priority": "critical"
+    },
+    "compliance-validator": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["security-audit"],
+      "priority": "medium"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}
