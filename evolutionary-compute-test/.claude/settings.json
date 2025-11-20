@@ -4,18 +4,48 @@
   "temperature": 0.7,
   "swarm_config": {
     "name": "evolutionary-compute-test",
-    "version": "1.0.0",
-    "architecture": "evolutionary_test_time_compute",
-    "max_parallel_agents": 6
+    "version": "2.0.0",
+    "architecture": "dual_track_evolutionary_test_time_compute",
+    "max_parallel_agents": 10
   },
   "evolutionary_config": {
+    "dual_track": {
+      "enabled": true,
+      "track_a_single_parent": {
+        "enabled": true,
+        "functions_per_generation": 50,
+        "max_generations": 4
+      },
+      "track_b_pooled_parent": {
+        "enabled": true,
+        "functions_per_generation": 25,
+        "max_generations": 4,
+        "pool_size": 5
+      }
+    },
     "initial_population": 30,
     "individual_revision_count": 5,
     "pooled_revision_count": 5,
-    "max_generations": 3,
+    "max_generations": 4,
     "fitness_threshold": 1.0,
     "early_stopping": true,
-    "parallel_evaluation": true
+    "parallel_evaluation": true,
+    "two_tier_scoring": {
+      "enabled": true,
+      "primary_score": "perfect_examples",
+      "secondary_score": "cell_accuracy"
+    }
+  },
+  "grid_encoding": {
+    "multi_format": true,
+    "formats": ["nested_list", "ascii", "base64_image", "dimensions"],
+    "simultaneous_presentation": true
+  },
+  "two_model_pattern": {
+    "enabled": true,
+    "instruction_model": "high",
+    "follow_model": "low",
+    "separation_benefits": "10x cost savings on execution"
   },
   "model_strategies": {
     "active_strategy": "balanced",
@@ -93,31 +123,47 @@
   "agents": {
     "generator": {
       "complexity": "high",
-      "role": "solution_generation",
+      "role": "instruction_generation",
       "parallel_instances": 1,
-      "diversity_prompts": 6
+      "diversity_prompts": 6,
+      "model_type": "instruction_model"
+    },
+    "executor": {
+      "complexity": "low",
+      "role": "instruction_execution",
+      "parallel_instances": 10,
+      "deterministic": true,
+      "model_type": "follow_model",
+      "multi_format_grids": true
     },
     "evaluator": {
       "complexity": "low",
       "role": "fitness_evaluation",
       "parallel_instances": 10,
-      "deterministic": true
+      "deterministic": true,
+      "scoring": {
+        "primary": "perfect_example_count",
+        "secondary": "cell_accuracy_percentage"
+      }
     },
     "individual_revisor": {
       "complexity": "medium",
       "role": "error_correction",
-      "parallel_instances": 2
+      "parallel_instances": 2,
+      "track": "single_parent"
     },
     "pooled_revisor": {
       "complexity": "high",
       "role": "solution_synthesis",
       "parallel_instances": 1,
-      "max_context_solutions": 5
+      "max_context_solutions": 5,
+      "track": "pooled_parent"
     },
     "orchestrator": {
       "complexity": "medium",
       "role": "evolutionary_management",
-      "parallel_instances": 1
+      "parallel_instances": 1,
+      "manages_dual_tracks": true
     }
   },
   "benchmarking": {
