@@ -1,0 +1,189 @@
+# Evolutionary Algorithm Parameters
+# Configure population sizes, selection strategies, and termination criteria
+
+evolution_parameters:
+  # Population configuration
+  population:
+    initial_size: 30
+    diversity_prompts: 6  # Rotate through N different generation strategies
+    generation_batch_size: 5  # Generate N candidates at a time
+    max_population_size: 50  # Cap total population across generations
+
+  # Selection configuration
+  selection:
+    individual_revision_count: 5  # Top N for individual revision
+    pooled_revision_count: 5  # Top N for pooled revision
+    pooled_revision_pool_size: 5  # How many to include in pooled synthesis
+    elitism: true  # Always keep best candidate
+    selection_method: "fitness_proportional"  # or "tournament", "rank_based"
+
+  # Revision configuration
+  revision:
+    max_individual_revisions: 1  # How many times to revise same candidate
+    max_pooled_revisions: 1  # How many pooled synthesis rounds
+    allow_duplicate_instructions: false  # Skip functionally identical candidates
+
+  # Termination criteria
+  termination:
+    fitness_threshold: 1.0  # Stop if candidate achieves perfect score
+    max_generations: 3  # Stop after N evolutionary cycles
+    max_candidates: 40  # Stop after generating N total candidates
+    early_stopping: true  # Stop if no improvement for N generations
+    stagnation_generations: 2  # Generations without improvement before stopping
+    time_limit_minutes: 10  # Maximum wall-clock time per problem
+
+  # Fitness evaluation
+  fitness:
+    metric: "accuracy"  # "accuracy", "partial_credit", "hamming_distance"
+    aggregation: "mean"  # How to combine fitness across multiple examples
+    partial_credit: true  # Award partial points for partially correct outputs
+    confidence_weighting: false  # Weight fitness by model confidence
+
+  # Parallel execution
+  parallelization:
+    enable_parallel_evaluation: true
+    max_parallel_evaluators: 10
+    evaluator_batch_size: 3  # Candidates per evaluator instance
+    enable_parallel_revision: true
+    max_parallel_revisors: 2
+
+# Evolutionary operators configuration
+operators:
+  mutation:  # Individual revision
+    enabled: true
+    rate: 1.0  # Probability of applying mutation (1.0 = always for top-K)
+    strategy: "error_guided"  # "error_guided", "random_perturbation", "local_search"
+    intensity: "moderate"  # "light", "moderate", "aggressive"
+
+  crossover:  # Pooled revision
+    enabled: true
+    rate: 1.0  # Probability of applying crossover
+    strategy: "synthesis"  # "synthesis", "interpolation", "mosaic"
+    num_parents: 5  # How many parents to combine
+    offspring_count: 5  # How many offspring to generate
+
+  selection:
+    strategy: "fitness_proportional"  # "fitness_proportional", "tournament", "rank"
+    tournament_size: 3  # If using tournament selection
+    elitism_count: 1  # Always keep top N candidates
+
+# Problem-specific configurations
+problem_types:
+  pattern_recognition:
+    name: "Pattern Recognition"
+    description: "Visual patterns, symmetries, transformations"
+    recommended_config:
+      initial_population: 30
+      diversity_prompts: 6
+      emphasis: ["visual_reasoning", "geometry", "symmetry"]
+    generator_prompt_weights:
+      visual_pattern: 0.3
+      logical_rule: 0.2
+      object_based: 0.2
+      mathematical: 0.2
+      abstract_reasoning: 0.1
+
+  logical_deduction:
+    name: "Logical Deduction"
+    description: "Rule-based transformations, if-then logic"
+    recommended_config:
+      initial_population: 25
+      diversity_prompts: 5
+      emphasis: ["logical_rules", "conditionals", "step_by_step"]
+    generator_prompt_weights:
+      logical_rule: 0.4
+      mathematical: 0.3
+      abstract_reasoning: 0.2
+      visual_pattern: 0.1
+
+  spatial_reasoning:
+    name: "Spatial Reasoning"
+    description: "Object manipulation, rotation, translation"
+    recommended_config:
+      initial_population: 30
+      diversity_prompts: 6
+      emphasis: ["object_tracking", "transformations", "spatial_relations"]
+    generator_prompt_weights:
+      object_based: 0.4
+      visual_pattern: 0.3
+      mathematical: 0.2
+      logical_rule: 0.1
+
+  compound_transformation:
+    name: "Compound Transformation"
+    description: "Multi-step, layered transformations"
+    recommended_config:
+      initial_population: 35
+      diversity_prompts: 6
+      emphasis: ["multi_step", "layered", "hierarchical"]
+      max_generations: 4  # More generations for complex problems
+    generator_prompt_weights:
+      hybrid: 0.3
+      abstract_reasoning: 0.3
+      logical_rule: 0.2
+      object_based: 0.2
+
+# Adaptive strategies
+adaptive_strategies:
+  dynamic_population:
+    enabled: true
+    description: "Adjust population size based on problem difficulty"
+    min_population: 20
+    max_population: 50
+    adjustment_trigger: "fitness_plateau"
+
+  dynamic_budget:
+    enabled: true
+    description: "Adjust thinking budget based on generation quality"
+    increase_if_stagnant: true
+    budget_multiplier: 1.2
+    max_budget_multiplier: 2.0
+
+  strategy_switching:
+    enabled: true
+    description: "Switch model strategy if not converging"
+    switch_after_generations: 2
+    fallback_strategy: "performance_optimized"
+
+# Benchmarking configuration
+benchmarking:
+  enabled: true
+  metrics:
+    - accuracy
+    - cost_per_problem
+    - time_to_solution
+    - generations_required
+    - fitness_progression
+    - model_efficiency
+    - diversity_score
+    - convergence_rate
+
+  comparisons:
+    - baseline_single_shot  # Compare to single non-evolutionary attempt
+    - baseline_random_search  # Compare to random sampling
+    - across_model_strategies  # Compare different model configs
+    - across_problem_types  # Compare performance by problem type
+
+  output:
+    format: "json"
+    path: "benchmarks/results/"
+    visualizations: true
+    statistical_tests: true
+
+# Logging and debugging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_generations: true
+  log_fitness_scores: true
+  log_candidate_instructions: true
+  log_execution_traces: false  # Verbose
+  save_population_snapshots: true
+  snapshot_interval: 1  # Save every N generations
+
+# Cost management
+cost_management:
+  track_cost: true
+  cost_limit_per_problem: 50.00  # USD
+  warn_at_percentage: 0.8  # Warn at 80% of limit
+  stop_at_limit: true
+  prioritize_efficiency: "balanced"  # "speed", "cost", "accuracy", "balanced"

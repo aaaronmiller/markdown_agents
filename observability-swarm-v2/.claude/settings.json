@@ -1,0 +1,62 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit"
+  },
+  "swarm_config": {
+    "name": "observability-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 4
+  },
+  "agents": {
+    "metrics-collector": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["fetch", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "log-aggregator": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "fetch", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "trace-analyzer": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["fetch", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "anomaly-detector": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["memory"],
+      "skills": [],
+      "priority": "critical"
+    },
+    "slo-tracker": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["memory"],
+      "skills": [],
+      "priority": "medium"
+    },
+    "incident-responder": {
+      "model": "opus",
+      "thinking_budget": 15000,
+      "tools": ["github", "memory"],
+      "skills": ["code-review"],
+      "priority": "critical"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 15000,
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit"
+  },
+  "swarm_config": {
+    "name": "migration-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 2
+  },
+  "agents": {
+    "code-analyst": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "critical"
+    },
+    "dependency-mapper": {
+      "model": "haiku",
+      "thinking_budget": 4000,
+      "tools": ["filesystem", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "language-translator": {
+      "model": "opus",
+      "thinking_budget": 18000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "critical"
+    },
+    "framework-migrator": {
+      "model": "sonnet",
+      "thinking_budget": 12000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "critical"
+    },
+    "semantic-validator": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": ["testing-strategies"],
+      "priority": "critical"
+    },
+    "migration-deployer": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": [],
+      "priority": "medium"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit"
+  },
+  "swarm_config": {
+    "name": "database-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 2
+  },
+  "agents": {
+    "migration-planner": {
+      "model": "sonnet",
+      "thinking_budget": 12000,
+      "tools": ["filesystem", "postgres", "memory"],
+      "skills": ["database-optimization"],
+      "priority": "critical"
+    },
+    "schema-differ": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["postgres", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "index-builder": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["postgres", "memory"],
+      "skills": ["database-optimization"],
+      "priority": "high"
+    },
+    "data-transformer": {
+      "model": "haiku",
+      "thinking_budget": 4000,
+      "tools": ["postgres", "filesystem", "memory"],
+      "skills": [],
+      "priority": "medium"
+    },
+    "validation-engine": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["postgres", "memory"],
+      "skills": [],
+      "priority": "critical"
+    },
+    "rollback-generator": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["postgres", "filesystem", "memory"],
+      "skills": ["database-optimization"],
+      "priority": "critical"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "temperature": 0.7,
+  "swarm_config": {
+    "name": "evolutionary-compute-test",
+    "version": "1.0.0",
+    "architecture": "evolutionary_test_time_compute",
+    "max_parallel_agents": 6
+  },
+  "evolutionary_config": {
+    "initial_population": 30,
+    "individual_revision_count": 5,
+    "pooled_revision_count": 5,
+    "max_generations": 3,
+    "fitness_threshold": 1.0,
+    "early_stopping": true,
+    "parallel_evaluation": true
+  },
+  "model_strategies": {
+    "active_strategy": "balanced",
+    "strategies": {
+      "cost_optimized": {
+        "high": {
+          "model": "claude-sonnet-4-20250514",
+          "thinking_budget": 10000,
+          "temperature": 0.8
+        },
+        "medium": {
+          "model": "claude-sonnet-3-5-20241022",
+          "thinking_budget": 6000,
+          "temperature": 0.5
+        },
+        "low": {
+          "model": "claude-haiku-4-20250514",
+          "thinking_budget": 2000,
+          "temperature": 0.3
+        }
+      },
+      "performance_optimized": {
+        "high": {
+          "model": "claude-opus-4-20250514",
+          "thinking_budget": 20000,
+          "temperature": 0.9
+        },
+        "medium": {
+          "model": "claude-sonnet-4-5-20250929",
+          "thinking_budget": 12000,
+          "temperature": 0.7
+        },
+        "low": {
+          "model": "claude-sonnet-4-20250514",
+          "thinking_budget": 8000,
+          "temperature": 0.5
+        }
+      },
+      "balanced": {
+        "high": {
+          "model": "claude-sonnet-4-5-20250929",
+          "thinking_budget": 15000,
+          "temperature": 0.8
+        },
+        "medium": {
+          "model": "claude-sonnet-4-20250514",
+          "thinking_budget": 10000,
+          "temperature": 0.6
+        },
+        "low": {
+          "model": "claude-haiku-4-20250514",
+          "thinking_budget": 3000,
+          "temperature": 0.3
+        }
+      },
+      "experimental": {
+        "high": {
+          "model": "claude-opus-4-20250514",
+          "thinking_budget": 18000,
+          "temperature": 1.0
+        },
+        "medium": {
+          "model": "claude-sonnet-4-5-20250929",
+          "thinking_budget": 10000,
+          "temperature": 0.8
+        },
+        "low": {
+          "model": "claude-haiku-4-20250514",
+          "thinking_budget": 2000,
+          "temperature": 0.2
+        }
+      }
+    }
+  },
+  "agents": {
+    "generator": {
+      "complexity": "high",
+      "role": "solution_generation",
+      "parallel_instances": 1,
+      "diversity_prompts": 6
+    },
+    "evaluator": {
+      "complexity": "low",
+      "role": "fitness_evaluation",
+      "parallel_instances": 10,
+      "deterministic": true
+    },
+    "individual_revisor": {
+      "complexity": "medium",
+      "role": "error_correction",
+      "parallel_instances": 2
+    },
+    "pooled_revisor": {
+      "complexity": "high",
+      "role": "solution_synthesis",
+      "parallel_instances": 1,
+      "max_context_solutions": 5
+    },
+    "orchestrator": {
+      "complexity": "medium",
+      "role": "evolutionary_management",
+      "parallel_instances": 1
+    }
+  },
+  "benchmarking": {
+    "enabled": true,
+    "track_metrics": [
+      "accuracy",
+      "cost_per_problem",
+      "time_to_solution",
+      "generations_required",
+      "fitness_by_generation",
+      "model_efficiency"
+    ],
+    "output_path": "benchmarks/results.json"
+  },
+  "memory_bank": {
+    "enabled": true,
+    "path": "memory/evolution-state.json",
+    "crdt_enabled": true,
+    "persist_generations": true
+  }
+}

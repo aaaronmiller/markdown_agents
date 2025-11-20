@@ -1,0 +1,74 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "temperature": 0.7,
+  "tools": [
+    "Task",
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Glob",
+    "Grep"
+  ],
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit",
+    "mcp_alternatives": true,
+    "skills": true
+  },
+  "swarm_config": {
+    "name": "documentation-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 3
+  },
+  "agents": {
+    "api-documenter": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["api-patterns"],
+      "priority": "medium"
+    },
+    "architecture-mapper": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "high"
+    },
+    "changelog-generator": {
+      "model": "haiku",
+      "thinking_budget": 2000,
+      "tools": ["github", "memory"],
+      "skills": [],
+      "priority": "low"
+    },
+    "code-documenter": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "medium"
+    },
+    "readme-optimizer": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "high"
+    },
+    "tutorial-writer": {
+      "model": "opus",
+      "thinking_budget": 15000,
+      "tools": ["filesystem", "memory"],
+      "skills": ["code-review", "api-patterns"],
+      "priority": "critical"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}

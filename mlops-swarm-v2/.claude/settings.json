@@ -1,0 +1,62 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "agent_toolkit": {
+    "enabled": true,
+    "root": "../agent-toolkit"
+  },
+  "swarm_config": {
+    "name": "mlops-swarm-v2",
+    "version": "2.0.0",
+    "max_parallel_agents": 3
+  },
+  "agents": {
+    "model-trainer": {
+      "model": "sonnet",
+      "thinking_budget": 10000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": ["code-review"],
+      "priority": "critical"
+    },
+    "feature-store": {
+      "model": "haiku",
+      "thinking_budget": 4000,
+      "tools": ["filesystem", "postgres", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "model-deployer": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["bash", "filesystem", "memory"],
+      "skills": [],
+      "priority": "critical"
+    },
+    "model-monitor": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["fetch", "memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "drift-detector": {
+      "model": "sonnet",
+      "thinking_budget": 8000,
+      "tools": ["memory"],
+      "skills": [],
+      "priority": "high"
+    },
+    "ab-tester": {
+      "model": "haiku",
+      "thinking_budget": 3000,
+      "tools": ["bash", "memory"],
+      "skills": ["testing-strategies"],
+      "priority": "medium"
+    }
+  },
+  "memoryBank": {
+    "enabled": true,
+    "path": "memory/memory-bank.json",
+    "crdtEnabled": true
+  }
+}

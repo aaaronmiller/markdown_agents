@@ -1,0 +1,183 @@
+# Model Strategy Configurations
+# Define high/medium/low model mappings for different optimization goals
+
+strategies:
+  # Cost-optimized: Minimize spend while maintaining reasonable performance
+  cost_optimized:
+    name: "Cost Optimized"
+    description: "Minimize cost per problem, accept slightly lower accuracy"
+    high:
+      model: "claude-sonnet-4-20250514"
+      thinking_budget: 10000
+      temperature: 0.8
+      cost_per_1m_tokens: 15.00
+      rationale: "Use Sonnet 4 for high-complexity instead of Opus (3× cheaper)"
+    medium:
+      model: "claude-sonnet-3-5-20241022"
+      thinking_budget: 6000
+      temperature: 0.5
+      cost_per_1m_tokens: 3.00
+      rationale: "Use Sonnet 3.5 for medium-complexity (5× cheaper than Sonnet 4)"
+    low:
+      model: "claude-haiku-4-20250514"
+      thinking_budget: 2000
+      temperature: 0.3
+      cost_per_1m_tokens: 0.25
+      rationale: "Haiku for evaluations (60× cheaper than Sonnet 4)"
+    expected_cost_per_problem: 5.00
+    expected_accuracy: 0.70
+
+  # Performance-optimized: Maximum accuracy regardless of cost
+  performance_optimized:
+    name: "Performance Optimized"
+    description: "Use best available models for highest accuracy"
+    high:
+      model: "claude-opus-4-20250514"
+      thinking_budget: 20000
+      temperature: 0.9
+      cost_per_1m_tokens: 75.00
+      rationale: "Opus for maximum strategic reasoning"
+    medium:
+      model: "claude-sonnet-4-5-20250929"
+      thinking_budget: 12000
+      temperature: 0.7
+      cost_per_1m_tokens: 15.00
+      rationale: "Latest Sonnet for strong analytical capability"
+    low:
+      model: "claude-sonnet-4-20250514"
+      thinking_budget: 8000
+      temperature: 0.5
+      cost_per_1m_tokens: 15.00
+      rationale: "Use Sonnet even for evaluation for maximum accuracy"
+    expected_cost_per_problem: 25.00
+    expected_accuracy: 0.85
+
+  # Balanced: Good performance at reasonable cost
+  balanced:
+    name: "Balanced"
+    description: "Balance cost and performance using Sonnet 4.5/4.0/Haiku"
+    high:
+      model: "claude-sonnet-4-5-20250929"
+      thinking_budget: 15000
+      temperature: 0.8
+      cost_per_1m_tokens: 15.00
+      rationale: "Sonnet 4.5 provides excellent reasoning at 1/5 cost of Opus"
+    medium:
+      model: "claude-sonnet-4-20250514"
+      thinking_budget: 10000
+      temperature: 0.6
+      cost_per_1m_tokens: 15.00
+      rationale: "Sonnet 4.0 for solid analytical work"
+    low:
+      model: "claude-haiku-4-20250514"
+      thinking_budget: 3000
+      temperature: 0.3
+      cost_per_1m_tokens: 0.25
+      rationale: "Haiku for fast, cheap evaluations"
+    expected_cost_per_problem: 8.50
+    expected_accuracy: 0.78
+
+  # Experimental: Test edge configurations
+  experimental:
+    name: "Experimental"
+    description: "Test unconventional model combinations"
+    high:
+      model: "claude-opus-4-20250514"
+      thinking_budget: 18000
+      temperature: 1.0
+      cost_per_1m_tokens: 75.00
+      rationale: "Maximum creativity with high temperature"
+    medium:
+      model: "claude-sonnet-4-5-20250929"
+      thinking_budget: 10000
+      temperature: 0.8
+      cost_per_1m_tokens: 15.00
+      rationale: "Strong mid-tier with elevated temperature"
+    low:
+      model: "claude-haiku-4-20250514"
+      thinking_budget: 2000
+      temperature: 0.2
+      cost_per_1m_tokens: 0.25
+      rationale: "Deterministic evaluation with minimal temperature"
+    expected_cost_per_problem: 20.00
+    expected_accuracy: 0.80
+
+  # Speed-optimized: Minimize time to solution
+  speed_optimized:
+    name: "Speed Optimized"
+    description: "Minimize latency, use smaller models and budgets"
+    high:
+      model: "claude-sonnet-4-20250514"
+      thinking_budget: 8000
+      temperature: 0.7
+      cost_per_1m_tokens: 15.00
+      rationale: "Sonnet with reduced budget for faster generation"
+    medium:
+      model: "claude-haiku-4-20250514"
+      thinking_budget: 4000
+      temperature: 0.5
+      cost_per_1m_tokens: 0.25
+      rationale: "Haiku for fast revision"
+    low:
+      model: "claude-haiku-4-20250514"
+      thinking_budget: 1000
+      temperature: 0.3
+      cost_per_1m_tokens: 0.25
+      rationale: "Minimal budget Haiku for evaluation"
+    expected_cost_per_problem: 3.00
+    expected_accuracy: 0.65
+    expected_time_minutes: 2.0
+
+# Model capability reference
+model_capabilities:
+  claude-opus-4-20250514:
+    tier: "premium"
+    strengths: ["creative synthesis", "complex reasoning", "strategic planning"]
+    weaknesses: ["high cost", "slower speed"]
+    best_for: ["generator", "pooled_revisor"]
+
+  claude-sonnet-4-5-20250929:
+    tier: "advanced"
+    strengths: ["balanced reasoning", "good cost-performance", "versatile"]
+    weaknesses: ["not as creative as Opus"]
+    best_for: ["generator", "pooled_revisor", "individual_revisor"]
+
+  claude-sonnet-4-20250514:
+    tier: "standard"
+    strengths: ["reliable reasoning", "good speed", "cost-effective"]
+    weaknesses: ["less creative than 4.5"]
+    best_for: ["individual_revisor", "orchestrator"]
+
+  claude-sonnet-3-5-20241022:
+    tier: "economy"
+    strengths: ["very cost-effective", "fast", "reliable"]
+    weaknesses: ["less capable than Sonnet 4"]
+    best_for: ["individual_revisor", "evaluator"]
+
+  claude-haiku-4-20250514:
+    tier: "efficiency"
+    strengths: ["extremely fast", "very cheap", "deterministic"]
+    weaknesses: ["limited reasoning depth"]
+    best_for: ["evaluator", "scorer"]
+
+# Recommended strategy selection guide
+selection_guide:
+  high_accuracy_required:
+    recommended: "performance_optimized"
+    fallback: "balanced"
+
+  budget_constrained:
+    recommended: "cost_optimized"
+    fallback: "speed_optimized"
+
+  time_critical:
+    recommended: "speed_optimized"
+    fallback: "cost_optimized"
+
+  research_exploration:
+    recommended: "experimental"
+    fallback: "balanced"
+
+  production_deployment:
+    recommended: "balanced"
+    fallback: "cost_optimized"
