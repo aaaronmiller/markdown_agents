@@ -1,0 +1,171 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "thinking_budget": 12000,
+  "temperature": 0.7,
+  "swarm_config": {
+    "name": "evolutionary-compute-library",
+    "version": "1.0.0",
+    "architecture": "library_based_meta_learning",
+    "max_parallel_agents": 12
+  },
+  "library_config": {
+    "enabled": true,
+    "library_path": "library/trained.pkl",
+    "metadata_path": "library/metadata.json",
+    "index_path": "library/index.json",
+    "empty_start": true,
+    "auto_update": true,
+    "retrieval": {
+      "method": "score_weighted_sampling",
+      "top_k": 5,
+      "temperature": 0.5,
+      "diversity_boost": true
+    },
+    "storage": {
+      "max_programs": 10000,
+      "deduplication": true,
+      "prune_unused": false
+    }
+  },
+  "training_config": {
+    "enabled": false,
+    "training_tasks": 1000,
+    "programs_per_task": 1,
+    "rounds_per_task": 1,
+    "budget_per_task": 1.00,
+    "total_budget": 1000.00
+  },
+  "evaluation_config": {
+    "programs_per_round": 5,
+    "rounds_per_task": 2,
+    "total_programs": 10,
+    "budget_per_task": 5.00,
+    "use_library": true,
+    "update_library": true
+  },
+  "scoring": {
+    "two_tier": true,
+    "primary": "perfect_example_count",
+    "secondary": "cell_accuracy_percentage",
+    "tiebreaker": "program_simplicity"
+  },
+  "model_strategies": {
+    "active_strategy": "balanced",
+    "strategies": {
+      "balanced": {
+        "high": {
+          "model": "claude-sonnet-4-5-20250929",
+          "thinking_budget": 15000,
+          "temperature": 0.8,
+          "use_case": "program_generation"
+        },
+        "medium": {
+          "model": "claude-sonnet-4-20250514",
+          "thinking_budget": 10000,
+          "temperature": 0.6,
+          "use_case": "library_management_orchestration"
+        },
+        "low": {
+          "model": "claude-haiku-4-20250514",
+          "thinking_budget": 3000,
+          "temperature": 0.3,
+          "use_case": "execution_evaluation_selection"
+        }
+      },
+      "cost_optimized": {
+        "high": {
+          "model": "claude-sonnet-4-20250514",
+          "thinking_budget": 12000,
+          "temperature": 0.8
+        },
+        "medium": {
+          "model": "claude-sonnet-3-5-20241022",
+          "thinking_budget": 8000,
+          "temperature": 0.6
+        },
+        "low": {
+          "model": "claude-haiku-4-20250514",
+          "thinking_budget": 2000,
+          "temperature": 0.3
+        }
+      },
+      "performance_optimized": {
+        "high": {
+          "model": "claude-opus-4-20250514",
+          "thinking_budget": 20000,
+          "temperature": 0.9
+        },
+        "medium": {
+          "model": "claude-sonnet-4-5-20250929",
+          "thinking_budget": 12000,
+          "temperature": 0.7
+        },
+        "low": {
+          "model": "claude-sonnet-4-20250514",
+          "thinking_budget": 8000,
+          "temperature": 0.5
+        }
+      }
+    }
+  },
+  "agents": {
+    "librarian": {
+      "complexity": "medium",
+      "role": "library_management",
+      "parallel_instances": 1,
+      "responsibilities": [
+        "retrieve_relevant_programs",
+        "update_library",
+        "maintain_index",
+        "compute_embeddings"
+      ]
+    },
+    "program_generator": {
+      "complexity": "high",
+      "role": "program_synthesis",
+      "parallel_instances": 1,
+      "context_sources": ["task", "training_examples", "library_programs"],
+      "output_count": 5,
+      "rounds": 2
+    },
+    "evaluator": {
+      "complexity": "low",
+      "role": "program_evaluation",
+      "parallel_instances": 10,
+      "deterministic": true,
+      "scoring_mode": "two_tier"
+    },
+    "selector": {
+      "complexity": "low",
+      "role": "best_program_selection",
+      "parallel_instances": 1,
+      "selection_criteria": ["primary_score_desc", "secondary_score_desc", "simplicity_asc"]
+    },
+    "orchestrator": {
+      "complexity": "medium",
+      "role": "workflow_coordination",
+      "parallel_instances": 1,
+      "manages_library": true,
+      "tracks_budget": true
+    }
+  },
+  "benchmarking": {
+    "enabled": true,
+    "track_metrics": [
+      "accuracy",
+      "cost_per_task",
+      "time_to_solution",
+      "library_size",
+      "library_reuse_rate",
+      "knowledge_transfer_effectiveness",
+      "v1_comparison"
+    ],
+    "output_path": "benchmarks/library_results.json"
+  },
+  "memory_bank": {
+    "enabled": true,
+    "path": "memory/library-state.json",
+    "persist_library": true,
+    "persist_performance": true
+  }
+}
